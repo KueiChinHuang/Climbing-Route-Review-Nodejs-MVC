@@ -12,10 +12,10 @@
     The following files must be repaired/completed:
     v- /app.js
     - /routes.js
-    - /controllers/SessionsController.js
-    - /controllers/UsersController.js
+    v- /controllers/SessionsController.js
+    v- /controllers/UsersController.js
     - /controllers/ResourcesController.js
-    - /models/User.js
+    v- /models/User.js
     - /models/Resource.js
     - /views/resources/index.js
     - /views/resources/show.js

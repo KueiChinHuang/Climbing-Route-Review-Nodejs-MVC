@@ -4,5 +4,5 @@ module.exports = router => {
   // Step 1: Setup the necessary routes for login, authenticate, and logout
   router.get('/login', _new);
   router.post('/authenticate', create);
-  router.get('/delete', _delete);
+  router.get('/logout', _delete);
 };
