@@ -10,7 +10,7 @@
 
   TASKS:
     The following files must be repaired/completed:
-    - /app.js
+    v- /app.js
     - /routes.js
     - /controllers/SessionsController.js
     - /controllers/UsersController.js

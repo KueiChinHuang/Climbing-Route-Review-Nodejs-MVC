@@ -12,12 +12,15 @@ exports.create = async (req, res) => {
   req.session.flash = {};
   
   try {
+    console.log(`In UsersController: ${JSON.stringify(req.body, null, 2)}`);
     // Step 1: Create the new user and register them with Passport
+    const user = new User(req.body);
+    await User.register(user, req.body.password);
 
     req.flash('success', 'The user was successfully created');
     res.redirect(`/login`);
   } catch (error) {
-    console.log('Errors');
+    console.log(`Errors: ${error}` );
     req.flash('danger', error.message);
 
     req.session.formData = req.body;

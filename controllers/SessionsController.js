@@ -9,7 +9,18 @@ exports.new = (req, res) => {
 };
 
 // Step 1: Create an action that will authenticate the user using Passport
-exports.create = (req, res, next) => {};
+exports.create = (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/',
+    successFlash: 'You were successfully logged in.',
+    failureRedirect: '/',
+    failureFlash: 'Invalid Credentials'
+  })(req, res, next);
+};
 
 // Step 2: Log the user out
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => {
+  req.logout();
+  req.flash('success', 'Successfully loged out.');
+  res.redirect('/');
+};

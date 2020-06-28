@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
+const users = require('../routes/users');
 
 // Step 1: Add the Passport plugin
 
@@ -14,7 +16,8 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    validate: {
+    validate:
+    {
       validator: function (v) {
         return this.emailConfirmation === v
       },
@@ -25,30 +28,38 @@ const UserSchema = new mongoose.Schema({
 
 // Virtuals
 UserSchema.virtual('emailConfirmation')
-.get(function () {
-  return this._emailConfirmation;
-})
-.set(function (value) {
-  this._emailConfirmation = value;
-});
+  .get(function () {
+    return this._emailConfirmation;
+  })
+  .set(function (value) {
+    this._emailConfirmation = value;
+  });
 
 UserSchema.virtual('password')
-.get(function () {
-  return this._password;
-})
-.set(function (value) {
-  this._password = value;
-});
+  .get(function () {
+    return this._password;
+  })
+  .set(function (value) {
+    this._password = value;
+  });
 
 UserSchema.virtual('passwordConfirmation')
-.get(function () {
-  return this._passwordConfirmation;
-})
-.set(function (value) {
-  if (this.password !== value) this.invalidate('password', 'Password and password confirmation must match');
-  this._passwordConfirmation = value;
-});
+  .get(function () {
+    return this._passwordConfirmation;
+  })
+  .set(function (value) {
+    if (this.password !== value) this.invalidate('password', 'Password and password confirmation must match');
+    this._passwordConfirmation = value;
+  });
 
 // Step 2: Create a virtual attribute that returns the fullname of the user
+UserSchema.virtual('fullname')
+  .get(function () {
+    return `${this.firstName} ${this.lastName}`;
+  });
+
+UserSchema.plugin(passportLocalMongoose, {
+    usernameField: 'email'
+});
 
 module.exports = mongoose.model('User', UserSchema);
