@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
-const users = require('../routes/users');
 
 // Step 1: Add the Passport plugin
 
