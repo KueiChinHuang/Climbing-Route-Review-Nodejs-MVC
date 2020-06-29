@@ -139,7 +139,14 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.delete = (req, res) => {
-  res.send('Hello World delete!');
+exports.delete = async (req, res) => {
+  try{
+    await Climbingroutes.deleteOne({_id: req.body.id});
+    req.flash('success', 'Delete successfully.');
+    res.redirect(`/${viewPath}`);
+  } catch (error) {
+    req.falsh('danger', `Delete failed. Error: ${error}`);
+    res.redirect(`/${viewPath}`);
+  }
 };
 
