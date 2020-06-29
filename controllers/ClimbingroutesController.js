@@ -1,4 +1,8 @@
 // INSTRUCTIONS:
+
+const User = require("../models/User");
+const Climbingroutes = require("../models/Climbingroutes");
+
 /*
   Create a new resource controller that uses the
   User as an associative collection (examples):
@@ -30,8 +34,21 @@ exports.new = (req, res) => {
   })
 };
 
-exports.create = (req, res) => {
-  res.send('Hello World create!');
+exports.create = async (req, res) => {
+  try {
+    console.log(req.session.passport);
+    const { user: email } = req.session.passport;
+    const user = await User.findOne({ email: email });
+    console.log('User: ', user);
+    const climbingroutes = await Climbingroutes.create({ user: user._id, ...req.body });
+
+    req.flash('success', 'Review created successfully');
+    res.redirect(`/climbingroutes/${climbingroutes.id}`);
+  } catch (error) {
+    req.flash('danger', `There was an error creating this review: ${error}`);
+    req.session.formData = req.body;
+    res.redirect('/climbingroutes/new');
+  }
 };
 
 exports.edit = (req, res) => {
