@@ -20,6 +20,8 @@ mongoose.connect(process.env.DB_URI, {
   useCreateIndex: true
 }).catch(err => console.error(`Error in mongoose connection: ${err}`));
 
+mongoose.set('useFindAndModify', false); // To fix this error: https://mongoosejs.com/docs/deprecations.html#findandmodify
+
 /*
   Step 3: Setup and configure Passport
 */
@@ -62,10 +64,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 const flash = require('connect-flash');
 app.use(flash());
 app.use('/', (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   res.locals.pageTitle = 'Untitled';
   res.locals.flash = req.flash();
-  console.log(res.locals.flash);
+  // console.log(res.locals.flash);
 
   res.locals.formData = req.session.formData || {};
   req.session.formData = {};

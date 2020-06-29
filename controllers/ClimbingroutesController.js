@@ -23,9 +23,9 @@ exports.index = async (req, res) => {
     const climbingroutes = await Climbingroutes
       .find()
       .populate('user')
-      .sort({ updatedAt: 'desc'});
+      .sort({ updatedAt: 'desc' });
 
-    let user ={};
+    let user = {};
     // console.log(`In controller, req.session.passport: ${JSON.stringify(req.session.passport, null, 2)}`);
 
     if (typeof (req.session.passport) !== 'undefined') {
@@ -94,12 +94,12 @@ exports.create = async (req, res) => {
 exports.edit = async (req, res) => {
   try {
     const climbingroute = await Climbingroutes.findById(req.params.id);
-    
+
     const { user: email } = req.session.passport;
     user = await User.findOne({ email: email });
 
-    if (climbingroute.user.toString() == user._id.toString()){
-      res.render(`${viewPath}/edit`,{
+    if (climbingroute.user.toString() == user._id.toString()) {
+      res.render(`${viewPath}/edit`, {
         pageTitle: 'Edit',
         user: user,
         formData: climbingroute
@@ -110,13 +110,33 @@ exports.edit = async (req, res) => {
 
   } catch (error) {
     req.flash('danger', `Edit failed: ${error}`);
-    res.redirect(`/climbingroutes/${req.params.id}`);
+    res.redirect(`/${viewPath}/${req.params.id}`);
   }
-  
+
 };
 
-exports.update = (req, res) => {
-  res.send('Hello World update!');
+exports.update = async (req, res) => {
+  try {
+    // console.log(`In controller, Update, req.body: ${JSON.stringify(req.body, null, 2)}`);
+    // console.log(`In controller, Update, req.session.passport: ${JSON.stringify(req.session.passport, null, 2)}`);
+
+    const { user: email } = req.session.passport;
+    const user = await User.findOne({ email: email });
+    
+    const climbingroute = await Climbingroutes.findById(req.body.id);
+    if(!climbingroute) throw 'The review can not be found.'    
+
+    const attributes = { user: user._id, ...req.body };
+    await Climbingroutes.validate(attributes);
+    await Climbingroutes.findByIdAndUpdate(attributes.id, attributes);    
+
+    req.flash('success', 'Update successfully.');
+    res.redirect(`${req.body.id}`);
+
+  } catch (error) {
+    req.flash('danger', `Update failed. Error: ${error}`)
+    res.redirect(`${req.body.id}/edit`);
+  }
 };
 
 exports.delete = (req, res) => {
