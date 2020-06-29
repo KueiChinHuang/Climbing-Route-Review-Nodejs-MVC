@@ -13,7 +13,7 @@ exports.create = (req, res, next) => {
   passport.authenticate('local', {
     successRedirect: '/',
     successFlash: 'You were successfully logged in.',
-    failureRedirect: '/',
+    failureRedirect: '/login',
     failureFlash: 'Invalid Credentials'
   })(req, res, next);
 };

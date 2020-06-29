@@ -24,17 +24,23 @@ exports.index = (req, res) => {
 
 exports.show = async (req, res) => {
   try {
-    console.log(req.params);
+    // console.log(req.params);
+    // get climbingroute info
     const climbingroute = await Climbingroutes.findById(req.params.id)
       .populate('user');
+      
+    // get current user info
+    const { user: email } = req.session.passport;
+    const user = await User.findOne({ email: email });
 
     res.render(`${viewPath}/show`, {
       pageTitle: climbingroute.name,
-      climbingroute: climbingroute
+      climbingroute: climbingroute,
+      user: user
     });
   } catch (error) {
-    console.log(`Error in controller show: ${error}`);
-    // res.flash('danger', `There was an error displaying this blog: ${error}`);
+    // console.log(`Error in controller show: ${error}`);
+    res.flash('danger', `There was an error displaying this blog: ${error}`);
     res.redirect(`${viewPath}`);
   }
 };

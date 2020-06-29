@@ -46,8 +46,8 @@ const path = require('path');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use('/css', express.static('/assets/css'));
-app.use('/images', express.static('/assets/images'));
+app.use('/css', express.static('assets/css'));
+app.use('/images', express.static('assets/images'));
 app.use('/javascript', express.static('assets/javascript'));
 /*
   Step 5: Setup the body parser

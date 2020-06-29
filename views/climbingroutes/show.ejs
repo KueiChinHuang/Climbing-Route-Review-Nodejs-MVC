@@ -10,11 +10,32 @@
   <header>
     <h1><%= climbingroute.location %> <%= climbingroute.color %> <%= climbingroute.difficulty %></h1>
     <small><%= climbingroute.updatedAt.toLocaleString("en-CA") %></small>
+
+    <%= console.log('In show view: ', JSON.stringify(formData, null, 2))%>    
+    <%= console.log('In show view, email of the post auther: ', climbingroute.user.email)%>    
+    <%= console.log('In show view, email of current login user: ', user.email)%>
+
+    <% if (authorized && (climbingroute.user.email === user.email)) { %>
+      &nbsp;&nbsp;
+      <a href="/climbingroutes/<%= climbingroute.id %>/edit">
+          <i class="fa fa-edit"></i>
+      </a>
+      &nbsp; / &nbsp;
+      <form action="/climbingroutes/delete" class="form-inline" method="POST" onsubmit="return confirm('Are you sure you want to delete your post \'<%= climbingroute.title %>\'?');">
+          <input type="hidden" value="<%= climbingroute.id %>" name="id">
+          <button type="submit" class="delete">
+              <i class="fa fa-trash"></i>
+          </button>
+      </form>
+  <% } %>
   </header>
 
   <hr>
 
   <body class="description">    
+    <% if (typeof climbingroute.user !== 'undefined') { %>
+      <p>By: <%= climbingroute.user.fullname %></p>
+    <% } %>
     <p>Review: <%- climbingroute.review %></p>
     <p>Description: <%- climbingroute.description %></p>
     

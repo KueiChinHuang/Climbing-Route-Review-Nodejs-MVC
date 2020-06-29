@@ -5,7 +5,8 @@ body {
 }
 
 header:not(.home-cta), .alert {
-  margin-top: 80px;
+  /* margin-top: 80px; */
+  margin-bottom: 0;
 }
 
 .home-cta {
@@ -32,4 +33,24 @@ header:not(.home-cta), .alert {
   font-size: 10rem;
   text-align: center;
   z-index: 1;
+}
+
+.form-inline {
+  display: inline-block;
+}
+
+.form-inline > .delete {
+  color: #007bff;
+  border-width: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-inline > .delete:hover{
+  color: #0056b3;
+}
+
+a:hover {
+  text-decoration: none;
 }
