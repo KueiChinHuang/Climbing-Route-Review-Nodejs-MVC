@@ -91,8 +91,28 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.edit = (req, res) => {
-  res.send('Hello World edit!');
+exports.edit = async (req, res) => {
+  try {
+    const climbingroute = await Climbingroutes.findById(req.params.id);
+    
+    const { user: email } = req.session.passport;
+    user = await User.findOne({ email: email });
+
+    if (climbingroute.user.toString() == user._id.toString()){
+      res.render(`${viewPath}/edit`,{
+        pageTitle: 'Edit',
+        user: user,
+        formData: climbingroute
+      })
+    } else {
+      throw 'You are not the author.'
+    }
+
+  } catch (error) {
+    req.flash('danger', `Edit failed: ${error}`);
+    res.redirect(`/climbingroutes/${req.params.id}`);
+  }
+  
 };
 
 exports.update = (req, res) => {
