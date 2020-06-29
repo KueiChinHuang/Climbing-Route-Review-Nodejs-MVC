@@ -1,8 +1,4 @@
 // INSTRUCTIONS:
-
-const User = require("../models/User");
-const Climbingroutes = require("../models/Climbingroutes");
-
 /*
   Create a new resource controller that uses the
   User as an associative collection (examples):
@@ -19,13 +15,28 @@ const Climbingroutes = require("../models/Climbingroutes");
   - delete
 */
 const viewPath = 'climbingroutes';
+const User = require("../models/User");
+const Climbingroutes = require("../models/Climbingroutes");
 
 exports.index = (req, res) => {
   res.send('Hello World index!');
 };
 
-exports.show = (req, res) => {
-  res.send('Hello World show!');
+exports.show = async (req, res) => {
+  try {
+    console.log(req.params);
+    const climbingroute = await Climbingroutes.findById(req.params.id)
+      .populate('user');
+
+    res.render(`${viewPath}/show`, {
+      pageTitle: climbingroute.name,
+      climbingroute: climbingroute
+    });
+  } catch (error) {
+    console.log(`Error in controller show: ${error}`);
+    // res.flash('danger', `There was an error displaying this blog: ${error}`);
+    res.redirect(`${viewPath}`);
+  }
 };
 
 exports.new = (req, res) => {
@@ -36,10 +47,10 @@ exports.new = (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    console.log(req.session.passport);
+    // console.log(req.session.passport);
     const { user: email } = req.session.passport;
     const user = await User.findOne({ email: email });
-    console.log('User: ', user);
+    // console.log('User: ', user);
     const climbingroutes = await Climbingroutes.create({ user: user._id, ...req.body });
 
     req.flash('success', 'Review created successfully');
@@ -47,7 +58,7 @@ exports.create = async (req, res) => {
   } catch (error) {
     req.flash('danger', `There was an error creating this review: ${error}`);
     req.session.formData = req.body;
-    res.redirect('/climbingroutes/new');
+    res.redirect(`${viewPath}/new`);
   }
 };
 

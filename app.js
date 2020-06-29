@@ -65,6 +65,7 @@ app.use('/', (req, res, next) => {
   console.log(req.body);
   res.locals.pageTitle = 'Untitled';
   res.locals.flash = req.flash();
+  console.log(res.locals.flash);
 
   res.locals.formData = req.session.formData || {};
   req.session.formData = {};

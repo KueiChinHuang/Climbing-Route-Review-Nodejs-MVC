@@ -9,20 +9,36 @@
     <input type="hidden" name="id" value="<%= formData.id %>">
     <% } %>
   </div>
-
+  
   <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" name="name" class="form-control" value="<%= formData.name%>">
+    <label for="location">Location</label>
+    <select name="location" class="form-control">
+      <option value="Wall A" <%= formData.location === 'Wall A' ? 'selected' : null %>> Wall A </option>
+      <option value="Wall B" <%= formData.location === 'Wall B' ? 'selected' : null %>> Wall B </option>
+      <option value="Wall C" <%= formData.location === 'Wall C' ? 'selected' : null %>> Wall C </option>
+      <option value="Wall D" <%= formData.location === 'Wall D' ? 'selected' : null %>> Wall D </option>
+    </select>
   </div>
 
   <div class="form-group">
-    <label for="location">Location</label>
-    <input type="text" name="location" class="form-control" value="<%= formData.location%>">
+    <label for="color">Color</label>
+    <select name="color" class="form-control">
+      <option value="Blue" <%= formData.color === 'Blue' ? 'selected' : null %>> Blue </option>
+      <option value="Red" <%= formData.color === 'Red' ? 'selected' : null %>> Red </option>
+      <option value="Green" <%= formData.color === 'Green' ? 'selected' : null %>> Green </option>
+      <option value="Black" <%= formData.color === 'Black' ? 'selected' : null %>> Black </option>
+    </select>
   </div>
 
   <div class="form-group">
     <label for="review">Review</label>
-    <input type="range" class="form-control-range" id="review" value="<%= formData.review%>">
+    <select name="review" class="form-control">
+      <option value="1" <%= formData.review === '1' ? 'selected' : null %>> 1 </option>
+      <option value="2" <%= formData.review === '2' ? 'selected' : null %>> 2 </option>
+      <option value="3" <%= formData.review === '3' ? 'selected' : null %>> 3 </option>
+      <option value="4" <%= formData.review === '4' ? 'selected' : null %>> 4 </option>
+      <option value="5" <%= formData.review === '5' ? 'selected' : null %>> 5 </option>
+    </select>
   </div>
 
   <div class="form-group">
@@ -32,8 +48,8 @@
 
   <div class="form-group">
     <label for="description">Description</label>
-    <textarea name="description" class="form-control summernote" value="<%= formData.description%>">
-              <%= formData.description%>
+    <textarea name="description" class="form-control" value="<%= formData.description%>">
+      <%= formData.description%>
     </textarea>
   </div>
 

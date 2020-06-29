@@ -21,7 +21,7 @@ const ClimbingrouteSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  name: {
+  color: {
     type: String,
     require: true
   },
@@ -31,15 +31,14 @@ const ClimbingrouteSchema = new mongoose.Schema({
   },
   review: {
     type: Number,
-    require: false
+    require: true
   },
   difficulty: {
     type: String,
     require: true
   },
   description: {
-    type: String,
-    require: false
+    type: String
   }
 },{
   timestamps: true
