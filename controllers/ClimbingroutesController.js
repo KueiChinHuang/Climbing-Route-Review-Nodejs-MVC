@@ -18,8 +18,31 @@ const viewPath = 'climbingroutes';
 const User = require("../models/User");
 const Climbingroutes = require("../models/Climbingroutes");
 
-exports.index = (req, res) => {
-  res.send('Hello World index!');
+exports.index = async (req, res) => {
+  try {
+    const climbingroutes = await Climbingroutes
+      .find()
+      .populate('user')
+      .sort({ updatedAt: 'desc'});
+
+    let user ={};
+    // console.log(`In controller, req.session.passport: ${JSON.stringify(req.session.passport, null, 2)}`);
+
+    if (typeof (req.session.passport) !== 'undefined') {
+      const { user: email } = req.session.passport;
+      user = await User.findOne({ email: email });
+    }
+
+    res.render(`${viewPath}/index`, {
+      pageTitle: 'Reviews',
+      climbingroutes: climbingroutes,
+      user: user
+    })
+
+  } catch (error) {
+    req.flash('danger', `There was an error displaying the reviews: ${error}`)
+    res.redirect('/');
+  }
 };
 
 exports.show = async (req, res) => {
@@ -28,7 +51,7 @@ exports.show = async (req, res) => {
     // get climbingroute info
     const climbingroute = await Climbingroutes.findById(req.params.id)
       .populate('user');
-      
+
     // get current user info
     const { user: email } = req.session.passport;
     const user = await User.findOne({ email: email });
@@ -40,7 +63,7 @@ exports.show = async (req, res) => {
     });
   } catch (error) {
     // console.log(`Error in controller show: ${error}`);
-    res.flash('danger', `There was an error displaying this blog: ${error}`);
+    req.flash('danger', `There was an error displaying this blog: ${error}`);
     res.redirect(`${viewPath}`);
   }
 };

@@ -40,8 +40,21 @@ const ClimbingrouteSchema = new mongoose.Schema({
   description: {
     type: String
   }
-},{
+}, {
   timestamps: true
 });
+
+ClimbingrouteSchema.virtual('title')
+  .get(function () {
+    return `${this.location} ${this.color} ${this.difficulty}`
+  })
+
+ClimbingrouteSchema.virtual('synopsis')
+  .get(function () {
+    const post = this.description;
+    return post
+      .replace(/(<([^>]+)>)/ig, "")
+      .substring(0, 250);
+  });
 
 module.exports = mongoose.model('Climbingroute', ClimbingrouteSchema);
