@@ -48,7 +48,7 @@ exports.index = async (req, res) => {
       .sort({ updatedAt: 'desc' });
     }
 
-    /*
+    /* // This would make the index shows nothing when people first come to this index page without searching for anything
     const climbingroutes = await Climbingroutes
     .find(queryLocation)
     // .find(queryColor)

@@ -2,6 +2,11 @@ html,
 body {
   height: 100%;
   width: 100%;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('/images/climbing-2264698_1920.jpg');
+  background-attachment: fixed;
+  
+  background-size: cover;
+  color: #fff;
 }
 
 header:not(.home-cta), .alert {
@@ -9,23 +14,25 @@ header:not(.home-cta), .alert {
   margin-bottom: 0;
 }
 
-.home-cta {
-  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('/images/climbing-2264698_1920.jpg');
-  background-size: cover;
-  height: 93%;
-  width: 100%;
+h1 {
+
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
 }
 
 .home-cta > h1, h4 {
-  color: #fff;
-  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
-  font-size: 5rem;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+
+  font-size: 7rem;
   text-align: center;
   z-index: 1;
 }
 
 .home-cta > h4 {
-  font-size: 2rem;
+  color: lightgray;
+  top: 40%;
+  font-size: 3.5rem;
   z-index: 2;
 }
 
@@ -47,4 +54,13 @@ header:not(.home-cta), .alert {
 
 a:hover {
   text-decoration: none;
+}
+
+#topBtn {  
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  cursor: pointer;
 }
