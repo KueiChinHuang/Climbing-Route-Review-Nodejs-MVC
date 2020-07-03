@@ -15,5 +15,5 @@ module.exports = router => {
     router.post('/climbingroutes/update',auth, update);
     router.post('/climbingroutes/delete',auth, _delete);
     router.get('/climbingroutes/:id/edit',auth, edit);
-    router.get('/climbingroutes/:id',auth, show);
+    router.get('/climbingroutes/:id', show);
 };

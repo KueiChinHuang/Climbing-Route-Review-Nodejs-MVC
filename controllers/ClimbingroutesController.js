@@ -19,16 +19,48 @@ const User = require("../models/User");
 const Climbingroutes = require("../models/Climbingroutes");
 
 exports.index = async (req, res) => {
-  try {
-    const climbingroutes = await Climbingroutes
+  try {    
+    // <%= console.log(`In climbingroutes form, formData: ${JSON.stringify(formData, null, 2)}`)%>
+    // <%= console.log(`In Index View, climbingroute: ${JSON.stringify(climbingroute, null, 2)}`)%>    
+    // <%= console.log(`In Index View, /climbingroutes/${climbingroute.id}`)%>
+
+
+    // console.log(`In controller, req.query: ${JSON.stringify(req.query, null, 2)}`);
+    let [queryLocation, queryColor, queryReview, queryDifficulty] = [{}, {}, {}, {}];
+    if (req.query.location != '0') queryLocation = {location: req.query.location};
+    if (req.query.color != '0') queryColor = {color: req.query.color};    
+    if (req.query.review != 0) queryReview = {review: req.query.review};    
+    if (req.query.difficulty != '') queryDifficulty = {difficulty: req.query.difficulty};    
+
+    let climbingroutes;
+    if (JSON.stringify(req.query, null, 2) == '{}') {
+      climbingroutes = await Climbingroutes
       .find()
       .populate('user')
       .sort({ updatedAt: 'desc' });
+    } else {
+      climbingroutes = await Climbingroutes
+      .find(queryLocation)
+      .find(queryColor)
+      .find(queryReview)
+      .find(queryDifficulty)
+      .populate('user')
+      .sort({ updatedAt: 'desc' });
+    }
+
+    /*
+    const climbingroutes = await Climbingroutes
+    .find(queryLocation)
+    // .find(queryColor)
+    .find()
+    .populate('user')
+    .sort({ updatedAt: 'desc' });
+    */
 
     let user = {};
-    // console.log(`In controller, req.session.passport: ${JSON.stringify(req.session.passport, null, 2)}`);
-
-    if (typeof (req.session.passport) !== 'undefined') {
+    if (typeof (req.session.passport) == 'undefined') {
+      req.session.passport = {};
+    } else {      
       const { user: email } = req.session.passport;
       user = await User.findOne({ email: email });
     }
@@ -36,7 +68,8 @@ exports.index = async (req, res) => {
     res.render(`${viewPath}/index`, {
       pageTitle: 'Reviews',
       climbingroutes: climbingroutes,
-      user: user
+      user: user,
+      formData: req.query
     })
 
   } catch (error) {
@@ -122,13 +155,13 @@ exports.update = async (req, res) => {
 
     const { user: email } = req.session.passport;
     const user = await User.findOne({ email: email });
-    
+
     const climbingroute = await Climbingroutes.findById(req.body.id);
-    if(!climbingroute) throw 'The review can not be found.'    
+    if (!climbingroute) throw 'The review can not be found.'
 
     const attributes = { user: user._id, ...req.body };
     await Climbingroutes.validate(attributes);
-    await Climbingroutes.findByIdAndUpdate(attributes.id, attributes);    
+    await Climbingroutes.findByIdAndUpdate(attributes.id, attributes);
 
     req.flash('success', 'Update successfully.');
     res.redirect(`${req.body.id}`);
@@ -140,8 +173,8 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  try{
-    await Climbingroutes.deleteOne({_id: req.body.id});
+  try {
+    await Climbingroutes.deleteOne({ _id: req.body.id });
     req.flash('success', 'Delete successfully.');
     res.redirect(`/${viewPath}`);
   } catch (error) {

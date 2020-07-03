@@ -11,10 +11,6 @@
     <h1><%= climbingroute.location %> <%= climbingroute.color %> <%= climbingroute.difficulty %></h1>
     <small><%= climbingroute.updatedAt.toLocaleString("en-CA") %></small>
 
-    <%= console.log('In show view: ', JSON.stringify(formData, null, 2))%>    
-    <%= console.log('In show view, email of the post auther: ', climbingroute.user.email)%>    
-    <%= console.log('In show view, email of current login user: ', user.email)%>
-
     <% if (authorized && (climbingroute.user.email === user.email)) { %>
       &nbsp;&nbsp;
       <a href="/climbingroutes/<%= climbingroute.id %>/edit">
@@ -34,10 +30,15 @@
 
   <div class="content">  
     <% if (typeof climbingroute.user !== 'undefined') { %>
-      <p>By: <%= climbingroute.user.fullname %></p>
+      <p>Author: <%= climbingroute.user.fullname %></p>
     <% } %>
     <p>Review: <%- climbingroute.review %></p>
     <p>Description: <%- climbingroute.description %></p>
+  </div>
+
+  <br>
+  <div>    
+    <a class="btn btn-light" onclick="goBack()">Go Back</a>
   </div>
 
 </div>
