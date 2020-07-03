@@ -29,7 +29,14 @@
         </div>
 
         <div class="card-body">
-          <h6 class="card-title text-info font-weight-bold">Review: <%= climbingroute.review %></h6>
+
+          <% for (let i=0; i<climbingroute.review; i++) { %>
+            <span class="fa fa-star checked"></span>
+          <% } %>
+          <% for (let i=0; i<5-climbingroute.review; i++) { %>
+            <span class="fa fa-star"></span>
+          <% } %>
+
           <p class="card-subtitle"><%= climbingroute.synopsis %></p>
           <p class="card-text text-muted my-2"><small>By: <%= climbingroute.user.fullname %></small></p>
         </div>
